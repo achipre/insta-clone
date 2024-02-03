@@ -11,10 +11,10 @@ export default function LoginPage () {
           </Box>
           <VStack spacing={4} align={'stretch'}>
             <AuthForm />
-            <Box textAlign={'center'} fontSize={20} fontFamily={'monospace'}>Get the App</Box>
+            <Box textAlign={'center'} fontSize={18} fontFamily={'monospace'}>Get the App</Box>
             <Flex gap={5} justifyContent={'center'}>
               <Image cursor={'pointer'} src='./LogoGoogleAppLight.png' alt='Logo PlayStore' h={'48px'}/>
-              <Image src='./LogoAppleAppLight.png' alt='Logo AppStore' h={'48px'}/>
+              <Image cursor={'pointer'} src='./LogoAppleAppLight.png' alt='Logo AppStore' h={'48px'}/>
             </Flex>
 
           </VStack>
