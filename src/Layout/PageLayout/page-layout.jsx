@@ -8,11 +8,13 @@ export default function PageLayout ({ children }) {
     <Flex>
       {/* Sidebar Left */}
       {
-        pathname !== '/login' && (
+        pathname !== '/login'
+          ? (
           <Box w={{ base: '70px', md: '240px' }}>
             <Sidebar />
           </Box>
-        )
+            )
+          : null
       }
 
       {/* Page content on the Right */}

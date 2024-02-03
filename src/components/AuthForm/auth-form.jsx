@@ -25,25 +25,26 @@ export default function AuthForm () {
 
   return (
     <>
-    {isAlert && <Alert status='error' position={'absolute'} bottom={4} maxW={'360px'} right={4} borderRadius={4} variant={'solid'}>
+    {isAlert && <Alert as={'span'} status='error' position={'absolute'} bottom={4} maxW={'360px'} right={4} borderRadius={4} variant={'solid'}>
       <AlertIcon />
       <AlertDescription>Please Fill all the fields.</AlertDescription>
     </Alert>}
       <Box border={'1px solid gray'} borderRadius={6} padding={5}>
         <VStack>
           <Text
+            as={'h1'}
             fontFamily={'Poppins'}
             color={'#FC6736'}
             fontWeight={800}
             fontSize={'2rem'}
             my={5}
           >Photo
-            <Text
+            <Box
               display={'inline-block'}
               color={'#0D9276'}
               fontWeight={300}
             >Gram
-            </Text>
+            </Box>
           </Text>
           <Input
             placeholder='Email'
@@ -63,8 +64,8 @@ export default function AuthForm () {
             value={inputs.password}
             onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
           />
-          {!isLogin &&
-          <Input
+          {!isLogin
+            ? <Input
             placeholder='Confirm Password'
             _hover={{ border: '1px solid gray' }}
             _focusVisible={{ border: '1px solid #0D9276' }}
@@ -73,6 +74,7 @@ export default function AuthForm () {
             value={inputs.confirmPassword}
             onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })}
           />
+            : null
           }
           {/* Login Auth */}
           <Button w={'full'} color={'#FC6736'} fontWeight={'300'} fontSize={18} onClick={handleAuth}>
@@ -85,7 +87,7 @@ export default function AuthForm () {
           </Flex>
           <Flex mb={4} gap={4} alignItems={'center'} cursor={'pointer'}>
             <Image src='./logoGoogle.png' w={'32px'} />
-            <Text color={'blue.300'}>Login with Google</Text>
+            <Box color={'blue.300'}>Login with Google</Box>
           </Flex>
         </VStack>
       </Box>
