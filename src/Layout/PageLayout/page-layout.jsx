@@ -10,7 +10,7 @@ export default function PageLayout ({ children }) {
       {
         pathname !== '/login'
           ? (
-          <Box w={{ base: '70px', md: '240px' }}>
+          <Box w={{ base: '70px', md: '220px' }}>
             <Sidebar />
           </Box>
             )
