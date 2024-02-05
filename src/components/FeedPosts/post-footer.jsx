@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { GoHeart, GoHeartFill } from 'react-icons/go'
 import { FaRegCommentAlt } from 'react-icons/fa'
 
-export default function PostFooter ({ username }) {
+export default function PostFooter ({ username, isProfilePicture }) {
   const [liked, setLiked] = useState(false)
   const [likes, setLikes] = useState(1000)
 
@@ -26,23 +26,24 @@ export default function PostFooter ({ username }) {
 
           >
           {!liked
-            ? <GoHeart size={32} />
-            : <GoHeartFill size={32}/>}
+            ? <GoHeart size={28} />
+            : <GoHeartFill size={28}/>}
         </Box>
         <Box cursor={'pointer'} _hover={''}>
-          <FaRegCommentAlt size={28} />
+          <FaRegCommentAlt size={24} />
 
         </Box>
       </Flex>
       <Text fontWeight={600} fontSize={18} my={1}>
         {likes} likes
       </Text>
-      <Text cursor={'pointer'} fontWeight={600} fontSize={14} my={1} >
-        {username}:
+      {!isProfilePicture && <Text cursor={'pointer'} fontWeight={600} fontSize={14} my={1} >
+        {username}
         <Text as={'span'} fontWeight={300} ml={1}>
         Como estas yo excelente..!
         </Text>
-      </Text>
+      </Text>}
+
       <Text cursor={'pointer'} fontSize={14} my={2} color={'gray'}>
         View all the comments
       </Text>
