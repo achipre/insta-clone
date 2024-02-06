@@ -33,8 +33,8 @@ export default function ProfilePost ({ img }) {
               <Box flex={1.5} display={'flex'} justifyContent={'center'} alignItems={'center'} position={'sticky'} >
                 <Image src={img} h={'full'} w={'full'} objectFit={'contain'} />
               </Box>
-              <Flex flex={1} overflow={'hidden'} direction={'column'} mx={{ base: 10, md: 12 }} ml={{ base: 4, md: 5 }} display={{ base: 'none', md: 'flex' }} >
-                <Flex justifyContent={'space-between'} alignItems={'center'} py={2} pb={6} >
+              <Flex flex={1} overflow={'hidden'} direction={'column'} display={{ base: 'none', md: 'flex' }} >
+                <Flex justifyContent={'space-between'} alignItems={'center'} py={2} pb={6} mx={{ base: 10, md: 12 }} ml={{ base: 4, md: 5 }}>
                   <Flex alignItems={'center'} gap={2} >
                     <Avatar src='./img-profile.jpeg' size={'sm'}/>
                     <Text cursor={'pointer'} color={'white'} fontWeight={600} fontSize={14} >useralex</Text>
@@ -45,7 +45,7 @@ export default function ProfilePost ({ img }) {
                   </Box>
                 </Flex>
                 <Divider />
-                <VStack gap={4} pt={8} overflow={'hidden'} maxH={'80vh'} overflowY={'scroll'}>
+                <VStack gap={4} pt={8} overflow={'hidden'} maxH={'80vh'} overflowY={'scroll'} mx={{ base: 4, md: 5 }}>
                   <CommentPost
                     createAt={'1d ago'}
                     username='fitnesgril69'
@@ -154,11 +154,9 @@ export default function ProfilePost ({ img }) {
                     profilePicture='./img-profile4.jpeg'
                     text='Google space virtual ❤️❤️❤️'
                   />
-
                 </VStack>
-                <Box mt={'auto'}>
                   <Divider mb={4} />
-
+                <Box mt={'auto'} mx={{ base: 4, md: 5 }}>
                   <PostFooter isProfilePicture={true} />
                 </Box>
               </Flex>
