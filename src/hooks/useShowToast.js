@@ -8,7 +8,7 @@ export default function useShowToast () {
       description,
       status,
       position: 'bottom-right',
-      duration: 3000,
+      duration: 2000,
       isClosable: true
     })
   }

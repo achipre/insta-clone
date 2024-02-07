@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, Icon, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import { IoEyeSharp, IoEyeOffSharp } from 'react-icons/io5'
-import useSignUpWithEmailAndPassword from '../../hooks/useSignUpWithEmail'
+import useSignUpWithEmailAndPassword from '../../hooks/useSignUpWithEmailAndPassword'
 
 export default function SignUp () {
   // auth from hooks
@@ -14,10 +14,8 @@ export default function SignUp () {
     email: '',
     password: ''
   })
-
   return (
     <>
-
       <Input
         placeholder='Fullname'
         _hover={{ border: '1px solid gray' }}
