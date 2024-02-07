@@ -1,10 +1,11 @@
-import { Box, Flex, Text, Link, Tooltip, Avatar } from '@chakra-ui/react'
+import { Box, Flex, Text, Link, Tooltip, Avatar, Button } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
 import { LogoPhotoGram } from '../../assets/components'
 import { GoHomeFill } from 'react-icons/go'
 import { FiSearch } from 'react-icons/fi'
 import { IoNotifications, IoExit } from 'react-icons/io5'
 import { SiAddthis } from 'react-icons/si'
+import useLogout from '../../hooks/useLogout'
 
 export default function Sidebar () {
   const sidebarIcons = [
@@ -31,6 +32,7 @@ export default function Sidebar () {
       link: '/asprofile'
     }
   ]
+  const { handleLogout, loading } = useLogout()
   return (
     <Box
       h={'100vh'}
@@ -99,6 +101,7 @@ export default function Sidebar () {
             </Tooltip>
           ))}
         </Flex>
+        {/* LOGOUT */}
         <Tooltip
           hasArrow
           label={'Logout'}
@@ -106,24 +109,21 @@ export default function Sidebar () {
           display={{ base: 'block', md: 'none' }}
           aria-label='A tooltip'
           openDelay={150} >
-          <Link
-            as={RouterLink}
-            to={'/login'}
+          <Flex
+            onClick={handleLogout}
             cursor={'pointer'}
             display={'flex'}
             flexDirection={'row'}
-            // justifyContent={'center'}
             gap={6}
             w={'full'}
             mt={'auto'}
-            p={2}
-            px={3}
-            pl={4}
-            borderRadius={6}
-            _hover={{ bg: 'whiteAlpha.300' }}>
-              <IoExit size={28} />
-            <Text display={{ base: 'none', md: 'block' }} fontWeight={600}>Logout</Text>
-          </Link>
+            borderRadius={6}>
+            <Button
+              px={{ base: '0', md: 'auto' }}
+              pl={{ base: '14px', md: 0 }}
+              bg={'transparent'} w={'full'} alignItems={'center'} justifyContent={'space-around' } isLoading={loading} leftIcon={<IoExit size={28} />} display={'flex'} fontWeight={600}>
+              <Text display={{ base: 'none', md: 'flex' }}>Logout</Text></Button>
+          </Flex>
         </Tooltip>
       </Flex>
 
