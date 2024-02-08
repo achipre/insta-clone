@@ -1,6 +1,6 @@
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { auth, firestore } from '../firebase/firebase'
-import { doc, setDoc } from 'firebase/firestore'
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore'
 import useShowToast from './useShowToast'
 import { useAuthStore } from '../store/authStore'
 
@@ -12,16 +12,25 @@ export default function useSignUpWithEmailAndPassword () {
   ] = useCreateUserWithEmailAndPassword(auth)
   const showToast = useShowToast()
   const loginUser = useAuthStore(state => state.login)
+
   const signup = async (inputs) => {
     if (!inputs.email || !inputs.password || !inputs.username || !inputs.fullname) {
       showToast('Error', 'Please fill all the field', 'error')
       return
     }
+    // Consulta de usuario
+    const usersRef = query(collection(firestore, 'users'), where('username', '==', inputs.username))
+    const querySnapshot = await getDocs(usersRef)
+    if (!querySnapshot.empty) {
+      showToast('Error', 'username no disponible', 'info')
+      return
+    }
+
     try {
       const newUser = await createUserWithEmailAndPassword(inputs.email, inputs.password)
       if (!newUser && error) {
         if (error.code === 'auth/email-already-in-use') {
-          showToast('Error', 'Usuario ya registrado', 'error')
+          showToast('Error', 'Correo ya registrado', 'error')
         }
         return
       }

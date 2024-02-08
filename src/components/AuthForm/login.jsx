@@ -1,31 +1,17 @@
-import { Alert, AlertDescription, AlertIcon, Button, Input } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom'
+import { Button, Input } from '@chakra-ui/react'
 import { useState } from 'react'
+import useLogin from '../../hooks/useLogin'
 
 export default function Login () {
   const [inputs, setInputs] = useState({
     email: '',
     password: ''
   })
-  const [isAlert, setIsAlert] = useState(false)
-  const navigate = useNavigate()
-  const handleAuth = () => {
-    if (!inputs.email || !inputs.password) {
-      setIsAlert(true)
-      setTimeout(() => {
-        setIsAlert(false)
-      }, 2000)
-      return
-    }
-    navigate('/')
-  }
+
+  const { login, loading } = useLogin()
 
   return (
     <>
-      {isAlert && <Alert as={'span'} status='error' position={'absolute'} bottom={4} maxW={'360px'} right={4} borderRadius={4} variant={'solid'}>
-        <AlertIcon />
-        <AlertDescription>Please Fill all the fields.</AlertDescription>
-      </Alert>}
       <Input
         placeholder='Email'
         _hover={{ border: '1px solid gray' }}
@@ -45,7 +31,7 @@ export default function Login () {
         onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
       />
       {/* Login Auth */}
-      <Button w={'full'} color={'#FC6736'} fontWeight={'300'} fontSize={18} onClick={handleAuth}>
+      <Button w={'full'} color={'#FC6736'} isLoading={loading} fontWeight={'300'} fontSize={18} onClick={() => login(inputs)}>
             Log in
       </Button>
     </>

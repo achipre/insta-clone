@@ -38,7 +38,7 @@ export default function AuthForm () {
             OR
             <Box border={'1px solid gray'} w={'full'}/>
           </Flex>
-          <GoogleAuth />
+          <GoogleAuth prefix={isLogin ? 'Login' : 'SignUp'} />
         </VStack>
       </Box>
       <Box border={'1px solid gray'} borderRadius={6} padding={5}>

@@ -7,7 +7,6 @@ import Navbar from '../../components/Navbar/navbar'
 
 export default function PageLayout ({ children }) {
   const [user, loading] = useAuthState(auth)
-  console.log(user)
   const { pathname } = useLocation()
   const canRenderSidebar = pathname !== '/login' && user
   const canRenderNavbar = !user && !loading && pathname !== '/login'
