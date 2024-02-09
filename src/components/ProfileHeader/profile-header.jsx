@@ -4,58 +4,85 @@ import {
   Button,
   Flex,
   Text,
-  VStack
+  VStack,
+  useDisclosure
 } from '@chakra-ui/react'
 import { MdEdit } from 'react-icons/md'
+import { useUserProfileStore } from '../../store/useProfileStore'
+import { useAuthStore } from '../../store/authStore'
+import EditProfileModal from './EditProfileModal'
 
 export default function ProfileHeader () {
+  const { userProfile } = useUserProfileStore()
+
+  const authUser = useAuthStore(state => state.user)
+  const visitingOwnProfileAndAuth = authUser && authUser.username === userProfile.username
+  const visitingOtherProfileAndAuth = authUser && authUser.username !== userProfile.username
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   return (
     <Flex gap={{ base: 2, md: 10 }} direction={{ base: 'column', md: 'row' }} mx={{ base: 0, md: 18 }} >
       {/* Avatar */}
       <AvatarGroup size={{ base: 'xl', sm: '2xl' }} justifyContent={'center'}>
         <Avatar
-          name="Alex Chipre"
-          src="https://github.com/achipre.png"
-          alt={'Profile Photo'}
+          name={userProfile.fullname}
+          src={userProfile.profilePicture}
+          alt={userProfile.username}
         />
       </AvatarGroup>
       {/* Biographic */}
       <VStack alignItems={'flex-start'} gap={2}>
         <Flex gap={{ base: 3, md: 6 }} alignItems={'center'} justifyContent={{ base: 'center', md: 'flex-start' }} w={'full'}>
           <Text fontWeight={600} cursor={'pointer'}>
-            username12689
+            {userProfile.username}
           </Text>
+          {visitingOwnProfileAndAuth &&
+            <Button
+              onClick={onOpen}
+              size={'sm'}
+              leftIcon={<MdEdit />}
+              colorScheme="cyan"
+              variant={'solid'}
+              px={{ base: 2, md: 5 }}
+              pr={{ base: 3, md: 8 }}
+            >
+              Edit
+            </Button>
+          }
+          {isOpen && <EditProfileModal isOpen={isOpen} onClose={onClose} />}
+          {visitingOtherProfileAndAuth &&
           <Button
-            size={'sm'}
-            leftIcon={<MdEdit />}
-            colorScheme="cyan"
-            variant={'solid'}
-            px={{ base: 2, md: 5 }}
-            pr={{ base: 3, md: 8 }}
-          >
-            Edit
-          </Button>
+          size={'sm'}
+          colorScheme="cyan"
+          variant={'solid'}
+          px={{ base: 2, md: 6 }}
+          pr={{ base: 2, md: 6 }}
+        >
+          Follow
+        </Button>
+          }
         </Flex>
         <Flex columnGap={{ base: 3, md: 6 }} alignItems={'center'} flexWrap={'wrap'} justifyContent={{ base: 'center', md: 'flex-start' }} w={'full'}>
           <Text fontWeight={600} cursor={'pointer'} >
-            1,825
+            {userProfile.posts.length}
             <Text as={'span'} fontWeight={'300'} ml={1}>posts</Text>
           </Text>
           <Text fontWeight={600} cursor={'pointer'}>
-            1.1M
+            {userProfile.followers.length}
             <Text as={'span'} fontWeight={'300'} ml={1}>followers</Text>
           </Text>
           <Text fontWeight={600} cursor={'pointer'}>
-            16
+            {userProfile.following.length}
             <Text as={'span'} fontWeight={'300'} ml={1}>following</Text>
           </Text>
         </Flex>
         <Flex direction={'column'} >
           <Text fontWeight={600}>
-            programmerBeginner
+            {userProfile.fullname}
           </Text>
           <Text fontSize={14} textOverflow={'ellipsis'} >
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga labore consectetur, molestiae voluptate repellendus eveniet amet laudantium dolor.
+            {userProfile.bio}
           </Text>
         </Flex>
       </VStack>
