@@ -17,15 +17,43 @@ import {
   useColorModeValue
 } from '@chakra-ui/react'
 import { SmallCloseIcon } from '@chakra-ui/icons'
+import { useRef, useState } from 'react'
+import { useAuthStore } from '../../store/authStore'
+import usePreviewImg from '../../hooks/usePreviewImg'
+import useEditProfile from '../../hooks/useEditProfile'
+import useShowToast from '../../hooks/useShowToast'
 
 export default function UserProfileEdit ({ isOpen, onClose }) {
+  const showToast = useShowToast()
+  const authUser = useAuthStore((state) => state.user)
+  const [inputs, setInputs] = useState({
+    fullname: '' || authUser.fullname,
+    username: '' || authUser.username,
+    bio: '' || authUser.bio
+
+  })
+
+  const fileRef = useRef(null)
+
+  const { selectedFile, handleImgChange, setSelectedFile } = usePreviewImg()
+  // Update Profile
+  const { editProfile, isUpdating } = useEditProfile()
+  const handleEditProfile = async () => {
+    try {
+      await editProfile(inputs, selectedFile)
+      setSelectedFile(null)
+      onClose()
+    } catch (error) {
+      showToast('Error', error.message, 'error')
+    }
+  }
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} minW={'268px'} isCentered size={{ base: 'full', sm: 'md' }}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent >
         <ModalHeader lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }} pb={2}>User Profile Edit</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody display={'flex'} alignItems={'center'} >
           <Stack
           spacing={4}
           w={'full'}
@@ -35,13 +63,12 @@ export default function UserProfileEdit ({ isOpen, onClose }) {
           boxShadow={'lg'}
           p={6}
           pt={1}
-          // my={12}
           >
           <FormControl id="userName">
             <FormLabel>User Icon</FormLabel>
             <Stack direction={['column', 'row']} spacing={6}>
               <Center>
-                <Avatar size="xl" src="https://bit.ly/sage-adebayo">
+                <Avatar size="xl" src={selectedFile || authUser.profilePicture}>
                   <AvatarBadge
                     as={IconButton}
                     size="sm"
@@ -54,32 +81,40 @@ export default function UserProfileEdit ({ isOpen, onClose }) {
                 </Avatar>
               </Center>
               <Center w="full">
-                <Button w="full">Change Icon</Button>
+                <Button onClick={() => fileRef.current.click()} w="full">Edit profile picture</Button>
+                <Input type='file' ref={fileRef} onChange={handleImgChange} hidden/>
               </Center>
             </Stack>
           </FormControl>
-          <FormControl id="userName" isRequired>
+          <FormControl>
             <FormLabel>User name</FormLabel>
             <Input
-              placeholder="UserName"
+              placeholder="Username"
               _placeholder={{ color: 'gray.500' }}
               type="text"
+              value={inputs.username}
+              onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
             />
           </FormControl>
-          <FormControl id="email" isRequired>
-            <FormLabel>Email address</FormLabel>
+          <FormControl>
+            <FormLabel>Full Name</FormLabel>
             <Input
-              placeholder="your-email@example.com"
+              placeholder="Full Name"
               _placeholder={{ color: 'gray.500' }}
-              type="email"
+              type="text"
+              value={inputs.fullname}
+              onChange={(e) => setInputs({ ...inputs, fullname: e.target.value })}
+
             />
           </FormControl>
-          <FormControl id="password" isRequired>
-            <FormLabel>Password</FormLabel>
+          <FormControl>
+            <FormLabel>Biography</FormLabel>
             <Input
-              placeholder="password"
+              placeholder="Biography"
               _placeholder={{ color: 'gray.500' }}
-              type="password"
+              type="text"
+              value={inputs.bio}
+              onChange={(e) => setInputs({ ...inputs, bio: e.target.value })}
             />
           </FormControl>
           <Stack spacing={6} direction={['column', 'row']}>
@@ -94,6 +129,8 @@ export default function UserProfileEdit ({ isOpen, onClose }) {
               Cancel
             </Button>
             <Button
+              onClick={handleEditProfile}
+              isLoading={isUpdating}
               bg={'blue.400'}
               color={'white'}
               w="full"
