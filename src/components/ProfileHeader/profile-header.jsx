@@ -11,15 +11,16 @@ import { MdEdit } from 'react-icons/md'
 import { useUserProfileStore } from '../../store/useProfileStore'
 import { useAuthStore } from '../../store/authStore'
 import EditProfileModal from './EditProfileModal'
+import useFollowUser from '../../hooks/useFollowUser'
 
 export default function ProfileHeader () {
   const { userProfile } = useUserProfileStore()
-
   const authUser = useAuthStore(state => state.user)
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isUpdate, isFollowing, handleFollowUser } = useFollowUser(userProfile?.uid)
+
   const visitingOwnProfileAndAuth = authUser && authUser.username === userProfile.username
   const visitingOtherProfileAndAuth = authUser && authUser.username !== userProfile.username
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <Flex gap={{ base: 2, md: 10 }} direction={{ base: 'column', md: 'row' }} mx={{ base: 0, md: 18 }} >
@@ -53,13 +54,15 @@ export default function ProfileHeader () {
           {isOpen && <EditProfileModal isOpen={isOpen} onClose={onClose} />}
           {visitingOtherProfileAndAuth &&
           <Button
+          onClick={handleFollowUser}
+          isLoading={isUpdate}
           size={'sm'}
           colorScheme="cyan"
           variant={'solid'}
           px={{ base: 2, md: 6 }}
           pr={{ base: 2, md: 6 }}
         >
-          Follow
+          {isFollowing ? 'UnFollow' : 'Follow' }
         </Button>
           }
         </Flex>
