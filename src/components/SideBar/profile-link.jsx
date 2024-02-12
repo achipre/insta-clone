@@ -25,7 +25,7 @@ export default function ProfileLink () {
         px={3}
         borderRadius={6}
         _hover={{ bg: 'whiteAlpha.300' }}>
-        <Avatar w={'32px'} h={'32px'} name={authUser.fullname} src={authUser?.profilePicture || ''} />
+        <Avatar w={'32px'} h={'32px'} name={authUser?.fullname} src={authUser?.profilePicture || ''} />
         <Text display={{ base: 'none', md: 'block' }} fontWeight={600}>Profile</Text>
       </Link>
     </Tooltip>

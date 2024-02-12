@@ -53,7 +53,7 @@ export default function useFollowUser (userId) {
         }
         localStorage.setItem('user-info', JSON.stringify({
           ...user,
-          following: [...userProfile.followers, user.uid]
+          following: [...user.following, userId]
 
         }))
         setIsFollowing(true)

@@ -1,9 +1,10 @@
 import { Avatar, Button, Flex, Text } from '@chakra-ui/react'
-import useFolloweUser from '../../hooks/useFollowUser'
 import { useAuthStore } from '../../store/authStore'
+import useFollowUser from '../../hooks/useFollowUser'
 
 export default function SuggestedUser ({ user, setUser }) {
-  const { isFollowing, isUpdate, handleFollowUser } = useFolloweUser(user.uid)
+  const { isUpdate, isFollowing, handleFollowUser } = useFollowUser(user.uid)
+
   const authUser = useAuthStore(state => state.user)
 
   const onFollowUser = async () => {
