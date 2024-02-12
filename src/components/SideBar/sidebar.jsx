@@ -1,37 +1,11 @@
-import { Box, Flex, Text, Link, Tooltip, Avatar, Button } from '@chakra-ui/react'
+import { Box, Flex, Text, Link, Tooltip, Button } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
 import { LogoPhotoGram } from '../../assets/components'
-import { GoHomeFill } from 'react-icons/go'
-import { FiSearch } from 'react-icons/fi'
-import { IoNotifications, IoExit } from 'react-icons/io5'
-import { SiAddthis } from 'react-icons/si'
 import useLogout from '../../hooks/useLogout'
+import SidebarItems from './sidebar-items'
+import { IoExit } from 'react-icons/io5'
 
 export default function Sidebar () {
-  const sidebarIcons = [
-    {
-      icon: <GoHomeFill size={32} />,
-      text: 'Home',
-      link: '/'
-    },
-    {
-      icon: <FiSearch size={32} />,
-      text: 'Search'
-    },
-    {
-      icon: <IoNotifications size={32} />,
-      text: 'Notifications'
-    },
-    {
-      icon: <SiAddthis size={28} />,
-      text: 'Create'
-    },
-    {
-      icon: <Avatar w={'32px'} h={'32px'} name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />,
-      text: 'Avatar',
-      link: '/asprofile'
-    }
-  ]
   const { handleLogout, loading } = useLogout()
   return (
     <Box
@@ -72,34 +46,7 @@ export default function Sidebar () {
           justifyContent={'center'}
           mt={10}
           alignItems={{ base: 'center', md: 'flex-start' }}>
-          {sidebarIcons.map((icon, idx) => (
-            <Tooltip
-              key={idx}
-              hasArrow
-              label={icon.text}
-              placement='right'
-              display={{ base: 'block', md: 'none' }}
-              aria-label='A tooltip'
-              openDelay={150} >
-              <Link
-                as={RouterLink}
-                to={icon.link || null}
-                cursor={'pointer'}
-                display={'flex'}
-                flexDirection={'row'}
-                alignItems={'center'}
-                gap={6}
-                ml={icon.text === 'Create' ? '2px' : 0}
-                w={'full'}
-                p={2}
-                px={3}
-                borderRadius={6}
-                _hover={{ bg: 'whiteAlpha.300' }}>
-                {icon.icon}
-                <Text display={{ base: 'none', md: 'block' }} fontWeight={600}>{icon.text}</Text>
-              </Link>
-            </Tooltip>
-          ))}
+          <SidebarItems />
         </Flex>
         {/* LOGOUT */}
         <Tooltip

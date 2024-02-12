@@ -16,7 +16,7 @@ export default function useFollowUser (userId) {
     setIsUpdate(true)
     try {
       const currentUserRef = doc(firestore, 'users', user.uid)
-      const userToFollowOrUnFollowRef = doc(firestore, 'user', userId)
+      const userToFollowOrUnFollowRef = doc(firestore, 'users', userId)
 
       await updateDoc(currentUserRef, {
         following: isFollowing ? arrayRemove(userId) : arrayUnion(userId)
@@ -45,10 +45,10 @@ export default function useFollowUser (userId) {
         })
         setUserProfile({
           ...userProfile,
-          following: [...userProfile.followers, user.uid]
+          followers: [...userProfile.followers, user.uid]
         })
         localStorage.setItem('user-info', JSON.stringify({
-          ...userProfile,
+          ...user,
           following: [...userProfile.followers, user.uid]
 
         }))
@@ -66,7 +66,7 @@ export default function useFollowUser (userId) {
       const isFollowing = user.following.includes(userId)
       setIsFollowing(isFollowing)
     }
-  }, [userId, isFollowing])
+  }, [userId, user])
 
   return { isUpdate, isFollowing, handleFollowUser }
 }
