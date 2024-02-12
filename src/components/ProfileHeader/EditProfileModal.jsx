@@ -70,6 +70,7 @@ export default function UserProfileEdit ({ isOpen, onClose }) {
               <Center>
                 <Avatar size="xl" src={selectedFile || authUser.profilePicture}>
                   <AvatarBadge
+                  onClick={() => setSelectedFile('')}
                     as={IconButton}
                     size="sm"
                     rounded="full"
