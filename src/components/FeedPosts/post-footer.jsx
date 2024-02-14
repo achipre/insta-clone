@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { GoHeart, GoHeartFill } from 'react-icons/go'
 import { FaRegCommentAlt } from 'react-icons/fa'
 import usePostComment from '../../hooks/usePostComments'
@@ -11,6 +11,12 @@ export default function PostFooter ({ post, username, isProfilePicture }) {
   const [comment, setComment] = useState('')
   const { isCommenting, handlePostComment } = usePostComment()
   const authUser = useAuthStore(state => state.user)
+
+  // focus input comment
+  const inputCommentRef = useRef(null)
+  const focusInputComment = () => {
+    inputCommentRef.current.focus()
+  }
 
   const handleSubmitComment = async () => {
     await handlePostComment(post.id, comment)
@@ -40,7 +46,7 @@ export default function PostFooter ({ post, username, isProfilePicture }) {
             : <GoHeartFill size={28}/>}
         </Box>
         <Box cursor={'pointer'} _hover={''}>
-          <FaRegCommentAlt size={24} />
+          <FaRegCommentAlt size={24} onClick={focusInputComment} />
 
         </Box>
       </Flex>
@@ -60,7 +66,7 @@ export default function PostFooter ({ post, username, isProfilePicture }) {
       {authUser &&
         <Flex mb={6} justifyItems={'center'} alignItems={'center'}>
           <InputGroup alignItems={'center'}>
-            <Input placeholder='Add a comment...' size={'sm'} variant={'flushed'} my={2} value={comment} onChange={(e) => setComment(e.target.value)}/>
+            <Input ref={inputCommentRef} placeholder='Add a comment...' size={'sm'} variant={'flushed'} my={2} value={comment} onChange={(e) => setComment(e.target.value)}/>
             <InputRightElement>
               <Button
                 onClick={handleSubmitComment}

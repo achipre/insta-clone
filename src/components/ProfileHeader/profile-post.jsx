@@ -13,9 +13,9 @@ import { useState } from 'react'
 import { deleteObject, ref } from 'firebase/storage'
 import { firestore, storage } from '../../firebase/firebase'
 import { arrayRemove, deleteDoc, doc, updateDoc } from 'firebase/firestore'
+import Caption from '../CommentPost/caption-post'
 
 export default function ProfilePost ({ post }) {
-  console.log(post)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const userProfile = useUserProfileStore(state => state.userProfile)
   const authUser = useAuthStore(state => state.user)
@@ -88,8 +88,11 @@ export default function ProfilePost ({ post }) {
                 </Flex>
                 <Divider />
                 <VStack gap={4} pt={8} overflow={'hidden'} maxH={'80vh'} overflowY={'scroll'} mx={{ base: 4, md: 5 }}>
+                  {/* Caption */}
+                  {post.caption && <Caption post={post}/>}
+                  {/* Comments */}
                   {post.comments.map(comment => (
-                    <CommentPost comment={comment} key={comment.id}/>
+                    <CommentPost key={comment.id} comment={comment} />
                   )
                   )}
 

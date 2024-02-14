@@ -23,7 +23,7 @@ export default function usePostComment () {
     }
     try {
       await updateDoc(doc(firestore, 'posts', postId), {
-        comments: arrayUnion(postId, newComment)
+        comments: arrayUnion(newComment)
       })
       addComment(postId, newComment)
     } catch (error) {
