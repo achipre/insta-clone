@@ -8,7 +8,6 @@ export default function ProfilePosts () {
   const userProfile = useUserProfileStore(state => state.userProfile)
 
   const noPostFound = !isLoading && userProfile.posts.length < 1 && posts.length < 1
-  console.log(noPostFound)
   if (noPostFound) return <NoPostFound />
   return (
   <Grid templateColumns={{ base: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={2}>

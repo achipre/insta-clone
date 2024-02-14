@@ -2,10 +2,20 @@ import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text } from '@
 import { useState } from 'react'
 import { GoHeart, GoHeartFill } from 'react-icons/go'
 import { FaRegCommentAlt } from 'react-icons/fa'
+import usePostComment from '../../hooks/usePostComments'
+import { useAuthStore } from '../../store/authStore'
 
-export default function PostFooter ({ username, isProfilePicture }) {
+export default function PostFooter ({ post, username, isProfilePicture }) {
   const [liked, setLiked] = useState(false)
   const [likes, setLikes] = useState(1000)
+  const [comment, setComment] = useState('')
+  const { isCommenting, handlePostComment } = usePostComment()
+  const authUser = useAuthStore(state => state.user)
+
+  const handleSubmitComment = async () => {
+    await handlePostComment(post.id, comment)
+    setComment('')
+  }
 
   const handleLike = () => {
     if (liked) {
@@ -47,14 +57,19 @@ export default function PostFooter ({ username, isProfilePicture }) {
       <Text cursor={'pointer'} fontSize={14} my={2} color={'gray'}>
         View all the comments
       </Text>
-      <Flex mb={6} justifyItems={'center'} alignItems={'center'}>
-        <InputGroup alignItems={'center'}>
-          <Input placeholder='Add a comment...' size={'sm'} variant={'flushed'} my={2}/>
-          <InputRightElement>
-            <Button cursor={'pointer'} fontSize={14} variant={'ghost'} color={'cyan.400'} fontWeight={600} _hover={{ color: 'white' }} bg={'transparent'} _active={{ bg: 'transparent' }}>Post</Button>
-          </InputRightElement>
-        </InputGroup>
-      </Flex>
+      {authUser &&
+        <Flex mb={6} justifyItems={'center'} alignItems={'center'}>
+          <InputGroup alignItems={'center'}>
+            <Input placeholder='Add a comment...' size={'sm'} variant={'flushed'} my={2} value={comment} onChange={(e) => setComment(e.target.value)}/>
+            <InputRightElement>
+              <Button
+                onClick={handleSubmitComment}
+                isLoading={isCommenting}
+                cursor={'pointer'} fontSize={14} variant={'ghost'} color={'cyan.400'} fontWeight={600} _hover={{ color: 'white' }} bg={'transparent'} _active={{ bg: 'transparent' }}>Post</Button>
+            </InputRightElement>
+          </InputGroup>
+        </Flex>
+      }
     </Box>
   )
 }

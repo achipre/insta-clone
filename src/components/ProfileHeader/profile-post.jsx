@@ -15,13 +15,14 @@ import { firestore, storage } from '../../firebase/firebase'
 import { arrayRemove, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 
 export default function ProfilePost ({ post }) {
+  console.log(post)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const userProfile = useUserProfileStore(state => state.userProfile)
   const authUser = useAuthStore(state => state.user)
   const showToast = useShowToast()
   const [isDeleting, setIsDeleting] = useState(false)
   const deletePost = usePostStore(state => state.deletePost)
-  const deletePostFromProfile = useUserProfileStore(state => state.deletePost)
+  const countPosts = useUserProfileStore(state => state.deletePost)
 
   const handleDeletePost = async () => {
     if (!window.confirm('Are you sure you want delete this post?')) return
@@ -38,7 +39,7 @@ export default function ProfilePost ({ post }) {
         posts: arrayRemove(post.id)
       })
       deletePost(post.id)
-      deletePostFromProfile(post.id)
+      countPosts(post.id)
       showToast('Success', 'Post deleted Successfully', 'success')
       onClose()
     } catch (error) {
@@ -87,118 +88,15 @@ export default function ProfilePost ({ post }) {
                 </Flex>
                 <Divider />
                 <VStack gap={4} pt={8} overflow={'hidden'} maxH={'80vh'} overflowY={'scroll'} mx={{ base: 4, md: 5 }}>
-                  <CommentPost
-                    createAt={'1d ago'}
-                    username='fitnesgril69'
-                    profilePicture='./img-profile2.jpeg'
-                    text='Dummy igae is of an Unplash como se sabe que es verdad. ⭐️'
-                  />
-                  <CommentPost
-                    createAt={'12h ago'}
-                    username='womanyoga8296'
-                    profilePicture='./img-profile3.jpeg'
-                    text='Imagen color splash an variaty como lo sabemos de aui en adelante ⛑️'
-                  />
-                  <CommentPost
-                    createAt={'3w ago'}
-                    username='cosplaytech2910'
-                    profilePicture='./img-profile4.jpeg'
-                    text='Google space virtual ❤️❤️❤️'
-                  />
-                  <CommentPost
-                    createAt={'1d ago'}
-                    username='fitnesgril69'
-                    profilePicture='./img-profile2.jpeg'
-                    text='Dummy igae is of an Unplash como se sabe que es verdad. ⭐️'
-                  />
-                  <CommentPost
-                    createAt={'12h ago'}
-                    username='womanyoga8296'
-                    profilePicture='./img-profile3.jpeg'
-                    text='Imagen color splash an variaty como lo sabemos de aui en adelante ⛑️'
-                  />
-                  <CommentPost
-                    createAt={'3w ago'}
-                    username='cosplaytech2910'
-                    profilePicture='./img-profile4.jpeg'
-                    text='Google space virtual ❤️❤️❤️'
-                  />
-                  <CommentPost
-                    createAt={'1d ago'}
-                    username='fitnesgril69'
-                    profilePicture='./img-profile2.jpeg'
-                    text='Dummy igae is of an Unplash como se sabe que es verdad. ⭐️'
-                  />
-                  <CommentPost
-                    createAt={'12h ago'}
-                    username='womanyoga8296'
-                    profilePicture='./img-profile3.jpeg'
-                    text='Imagen color splash an variaty como lo sabemos de aui en adelante ⛑️'
-                  />
-                  <CommentPost
-                    createAt={'3w ago'}
-                    username='cosplaytech2910'
-                    profilePicture='./img-profile4.jpeg'
-                    text='Google space virtual ❤️❤️❤️'
-                  />
-                  <CommentPost
-                    createAt={'1d ago'}
-                    username='fitnesgril69'
-                    profilePicture='./img-profile2.jpeg'
-                    text='Dummy igae is of an Unplash como se sabe que es verdad. ⭐️'
-                  />
-                  <CommentPost
-                    createAt={'12h ago'}
-                    username='womanyoga8296'
-                    profilePicture='./img-profile3.jpeg'
-                    text='Imagen color splash an variaty como lo sabemos de aui en adelante ⛑️'
-                  />
-                  <CommentPost
-                    createAt={'3w ago'}
-                    username='cosplaytech2910'
-                    profilePicture='./img-profile4.jpeg'
-                    text='Google space virtual ❤️❤️❤️'
-                  />
-                  <CommentPost
-                    createAt={'1d ago'}
-                    username='fitnesgril69'
-                    profilePicture='./img-profile2.jpeg'
-                    text='Dummy igae is of an Unplash como se sabe que es verdad. ⭐️'
-                  />
-                  <CommentPost
-                    createAt={'12h ago'}
-                    username='womanyoga8296'
-                    profilePicture='./img-profile3.jpeg'
-                    text='Imagen color splash an variaty como lo sabemos de aui en adelante ⛑️'
-                  />
-                  <CommentPost
-                    createAt={'3w ago'}
-                    username='cosplaytech2910'
-                    profilePicture='./img-profile4.jpeg'
-                    text='Google space virtual ❤️❤️❤️'
-                  />
-                  <CommentPost
-                    createAt={'1d ago'}
-                    username='fitnesgril69'
-                    profilePicture='./img-profile2.jpeg'
-                    text='Dummy igae is of an Unplash como se sabe que es verdad. ⭐️'
-                  />
-                  <CommentPost
-                    createAt={'12h ago'}
-                    username='womanyoga8296'
-                    profilePicture='./img-profile3.jpeg'
-                    text='Imagen color splash an variaty como lo sabemos de aui en adelante ⛑️'
-                  />
-                  <CommentPost
-                    createAt={'3w ago'}
-                    username='cosplaytech2910'
-                    profilePicture='./img-profile4.jpeg'
-                    text='Google space virtual ❤️❤️❤️'
-                  />
+                  {post.comments.map(comment => (
+                    <CommentPost comment={comment} key={comment.id}/>
+                  )
+                  )}
+
                 </VStack>
-                  <Divider mb={4} />
+                {/* <Divider mb={4} /> */}
                 <Box mt={'auto'} mx={{ base: 4, md: 5 }}>
-                  <PostFooter isProfilePicture={true} />
+                  <PostFooter post={post} isProfilePicture={true} />
                 </Box>
               </Flex>
             </Flex>
