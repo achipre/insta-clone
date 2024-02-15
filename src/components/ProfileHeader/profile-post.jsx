@@ -14,6 +14,7 @@ import { deleteObject, ref } from 'firebase/storage'
 import { firestore, storage } from '../../firebase/firebase'
 import { arrayRemove, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import Caption from '../CommentPost/caption-post'
+import useLikePost from '../../hooks/useLikePost'
 
 export default function ProfilePost ({ post }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -23,6 +24,8 @@ export default function ProfilePost ({ post }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const deletePost = usePostStore(state => state.deletePost)
   const countPosts = useUserProfileStore(state => state.deletePost)
+  const { likes } = useLikePost(post)
+  console.log(likes)
 
   const handleDeletePost = async () => {
     if (!window.confirm('Are you sure you want delete this post?')) return
@@ -58,7 +61,7 @@ export default function ProfilePost ({ post }) {
           </Flex>
           <Flex gap={2}>
             <TiHeartFullOutline size={28} />
-            <Text fontWeight={600}>{post.likes.length}</Text>
+            <Text fontWeight={600}>{likes}</Text>
           </Flex>
 
         </Flex>
@@ -91,8 +94,8 @@ export default function ProfilePost ({ post }) {
                   {/* Caption */}
                   {post.caption && <Caption post={post}/>}
                   {/* Comments */}
-                  {post.comments.map(comment => (
-                    <CommentPost key={comment.id} comment={comment} />
+                  {post.comments.map((comment, idx) => (
+                    <CommentPost key={idx} comment={comment} />
                   )
                   )}
 

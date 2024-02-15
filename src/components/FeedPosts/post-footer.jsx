@@ -4,13 +4,13 @@ import { GoHeart, GoHeartFill } from 'react-icons/go'
 import { FaRegCommentAlt } from 'react-icons/fa'
 import usePostComment from '../../hooks/usePostComments'
 import { useAuthStore } from '../../store/authStore'
+import useLikePost from '../../hooks/useLikePost'
 
 export default function PostFooter ({ post, username, isProfilePicture }) {
-  const [liked, setLiked] = useState(false)
-  const [likes, setLikes] = useState(1000)
   const [comment, setComment] = useState('')
   const { isCommenting, handlePostComment } = usePostComment()
   const authUser = useAuthStore(state => state.user)
+  const { likes, isLiked, handleLikePost } = useLikePost(post)
 
   // focus input comment
   const inputCommentRef = useRef(null)
@@ -23,25 +23,16 @@ export default function PostFooter ({ post, username, isProfilePicture }) {
     setComment('')
   }
 
-  const handleLike = () => {
-    if (liked) {
-      setLiked(false)
-      setLikes(likes - 1)
-    } else {
-      setLiked(true)
-      setLikes(likes + 1)
-    }
-  }
   return (
     <Box mb={10}>
       <Flex alignItems={'center'} gap={4} w={'full'} pt={2} my={1}>
         <Box
-          onClick={handleLike}
+          onClick={handleLikePost}
           cursor={'pointer'}
-          _hover={{ opacity: liked ? null : '.7' }}
+          _hover={{ opacity: isLiked ? null : '.7' }}
 
           >
-          {!liked
+          {!isLiked
             ? <GoHeart size={28} />
             : <GoHeartFill size={28}/>}
         </Box>
