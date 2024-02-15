@@ -1,12 +1,14 @@
-import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text, useDisclosure } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { GoHeart, GoHeartFill } from 'react-icons/go'
 import { FaRegCommentAlt } from 'react-icons/fa'
 import usePostComment from '../../hooks/usePostComments'
 import { useAuthStore } from '../../store/authStore'
 import useLikePost from '../../hooks/useLikePost'
+import CommentModal from '../../Modals/comments-modal'
 
 export default function PostFooter ({ post, isProfilePage, creatorProfile }) {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [comment, setComment] = useState('')
   const { isCommenting, handlePostComment } = usePostComment()
   const authUser = useAuthStore(state => state.user)
@@ -49,13 +51,15 @@ export default function PostFooter ({ post, isProfilePage, creatorProfile }) {
         <Text as={'span'} fontWeight={300} ml={1}>
         {post.caption}
         </Text>
-      </Text>}
+        <CommentModal onClose={onClose} isOpen={isOpen} post={post} />
+      </Text>
+      }
 
       {post.comments.length < 0
         ? <Text cursor={'pointer'} fontSize={14} my={2} color={'gray'}>
         No have commnets
       </Text>
-        : <Text cursor={'pointer'} fontSize={14} my={2} color={'gray'}>
+        : <Text onClick={onOpen} cursor={'pointer'} fontSize={14} my={2} color={'gray'}>
         View all {post.comments.length} comments
       </Text>}
       {authUser &&

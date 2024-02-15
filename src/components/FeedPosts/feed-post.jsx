@@ -5,7 +5,6 @@ import PostHeader from './post-header'
 
 export default function FeedPost ({ post, isLoading }) {
   const { userProfile } = useGetUserProfileById(post.createBy)
-  console.log(isLoading)
   return (
     <>
       <PostHeader post={post} creatorProfile={userProfile} />
