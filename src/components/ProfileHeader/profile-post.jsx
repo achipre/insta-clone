@@ -102,7 +102,7 @@ export default function ProfilePost ({ post }) {
                 </VStack>
                 {/* <Divider mb={4} /> */}
                 <Box mt={'auto'} mx={{ base: 4, md: 5 }}>
-                  <PostFooter post={post} isProfilePicture={true} />
+                  <PostFooter post={post} isProfilePage={true} />
                 </Box>
               </Flex>
             </Flex>

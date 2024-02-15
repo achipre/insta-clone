@@ -6,7 +6,7 @@ import usePostComment from '../../hooks/usePostComments'
 import { useAuthStore } from '../../store/authStore'
 import useLikePost from '../../hooks/useLikePost'
 
-export default function PostFooter ({ post, username, isProfilePicture }) {
+export default function PostFooter ({ post, isProfilePage, creatorProfile }) {
   const [comment, setComment] = useState('')
   const { isCommenting, handlePostComment } = usePostComment()
   const authUser = useAuthStore(state => state.user)
@@ -44,16 +44,20 @@ export default function PostFooter ({ post, username, isProfilePicture }) {
       <Text fontWeight={600} fontSize={18} my={1}>
         {likes} likes
       </Text>
-      {!isProfilePicture && <Text cursor={'pointer'} fontWeight={600} fontSize={14} my={1} >
-        {username}
+      {!isProfilePage && <Text cursor={'pointer'} fontWeight={600} fontSize={14} my={1} >
+        {creatorProfile?.username}
         <Text as={'span'} fontWeight={300} ml={1}>
-        Como estas yo excelente..!
+        {post.caption}
         </Text>
       </Text>}
 
-      <Text cursor={'pointer'} fontSize={14} my={2} color={'gray'}>
-        View all the comments
+      {post.comments.length < 0
+        ? <Text cursor={'pointer'} fontSize={14} my={2} color={'gray'}>
+        No have commnets
       </Text>
+        : <Text cursor={'pointer'} fontSize={14} my={2} color={'gray'}>
+        View all {post.comments.length} comments
+      </Text>}
       {authUser &&
         <Flex mb={6} justifyItems={'center'} alignItems={'center'}>
           <InputGroup alignItems={'center'}>
