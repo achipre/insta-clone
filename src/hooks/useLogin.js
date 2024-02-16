@@ -7,7 +7,7 @@ import { useAuthStore } from '../store/authStore'
 export default function useLogin () {
   const [
     signInWithEmailAndPassword,
-    user,
+    ,
     loading,
     error
   ] = useSignInWithEmailAndPassword(auth)
@@ -15,7 +15,6 @@ export default function useLogin () {
 
   const showToast = useShowToast()
 
-  console.log(user)
   const login = async (inputs) => {
     if (!inputs.email || !inputs.password) {
       return showToast('Error', 'Please fill the fields', 'error')
@@ -32,11 +31,9 @@ export default function useLogin () {
         return showToast('Error', 'Password Invalida', 'error')
       }
       if (error.code === 'auth/too-many-requests') {
-        console.log(error)
         return showToast('Error', 'Demasiados intentos incorrectos intente mas tarde', 'error')
       }
     } catch (error) {
-      console.log(error)
     }
   }
   return { login, loading }

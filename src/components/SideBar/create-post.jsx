@@ -23,6 +23,7 @@ import { usePostStore } from '../../store/postStore'
 import { useUserProfileStore } from '../../store/useProfileStore'
 import { addDoc, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadString } from 'firebase/storage'
+import { useLocation } from 'react-router-dom'
 
 export default function CreatePost () {
   const showToast = useShowToast()
@@ -105,7 +106,8 @@ function useCreatePost () {
   const authUser = useAuthStore(state => state.user)
   const createPost = usePostStore(state => state.createPost)
   const addPost = useUserProfileStore(state => state.addPost)
-  // const { pathname } = useLocation()
+  const userProfile = useUserProfileStore(state => state.userProfile)
+  const { pathname } = useLocation()
 
   const handleCreatePost = async (selectedFile, caption) => {
     if (isLoading) return
@@ -131,8 +133,8 @@ function useCreatePost () {
 
       newPost.imageURL = downloadURL
 
-      createPost({ ...newPost, id: postDocRef.id })
-      addPost({ ...newPost, id: postDocRef.id })
+      if (userProfile.uid === authUser.uid) createPost({ ...newPost, id: postDocRef.id })
+      if (pathname !== '/' && userProfile.uid === authUser.uid) addPost({ ...newPost, id: postDocRef.id })
 
       showToast('Success', 'Subida de Post Exitosa', 'success')
     } catch (error) {

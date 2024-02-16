@@ -25,7 +25,6 @@ export default function ProfilePost ({ post }) {
   const deletePost = usePostStore(state => state.deletePost)
   const countPosts = useUserProfileStore(state => state.deletePost)
   const { likes } = useLikePost(post)
-  console.log(likes)
 
   const handleDeletePost = async () => {
     if (!window.confirm('Are you sure you want delete this post?')) return
